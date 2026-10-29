@@ -1,0 +1,29 @@
+# Test-only overlay. Invoked by e2e/run.py with private, generated credentials.
+services:
+  community-web:
+    build:
+      context: ../../react-study
+      dockerfile: Dockerfile
+  smtp:
+    image: node:22-alpine
+    command: ["node", "/app/smtp.cjs"]
+    restart: "no"
+    volumes:
+      - ../../react-study/e2e/smtp.cjs:/app/smtp.cjs:ro
+    ports:
+      - "127.0.0.1:${E2E_SMTP_HTTP_PORT:?Set the isolated inbox port}:8025"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8025/healthz').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+  community-api:
+    environment:
+      SMTP_HOST: smtp
+      SMTP_PORT: "2525"
+      SMTP_FROM: no-reply@example.test
+      SMTP_AUTH: "false"
+      SMTP_STARTTLS: "false"
+    depends_on:
+      smtp:
+        condition: service_healthy

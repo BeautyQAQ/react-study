@@ -70,9 +70,9 @@ export default function Game() {
   }
 
   return (
-    <main className="app">
+    <section className="tic-tac-toe" aria-label="井字棋小游戏">
       <header className="game-header">
-        <p className="eyebrow">React study</p>
+        <p className="eyebrow">小游戏 · 无需登录</p>
         <h1>Tic-tac-toe</h1>
         <p className="intro">Take turns as X and O. Get three in a row to win.</p>
       </header>
@@ -107,7 +107,7 @@ export default function Game() {
           </ol>
         </aside>
       </div>
-    </main>
+    </section>
   );
 }
 

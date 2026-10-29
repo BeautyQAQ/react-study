@@ -1,0 +1,16 @@
+.git
+.github
+node_modules
+dist
+.env
+.env.*
+.npmrc
+*.log
+.DS_Store
+.idea
+.vscode
+
+# Development documentation and integration tooling
+docs/
+e2e/
+scripts/

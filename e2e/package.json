@@ -1,0 +1,16 @@
+{
+  "name": "liushao-real-api-e2e",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Browser regression against an isolated production Compose stack",
+  "scripts": {
+    "test": "playwright test",
+    "test:list": "playwright test --list"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.0"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

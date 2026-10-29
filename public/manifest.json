@@ -1,6 +1,6 @@
 {
-  "short_name": "React Study",
-  "name": "Tic-tac-toe | React Study",
+  "short_name": "流沙社区",
+  "name": "流沙社区 React 版",
   "icons": [
     {
       "src": "favicon.ico",
@@ -21,6 +21,6 @@
   "start_url": ".",
   "scope": ".",
   "display": "standalone",
-  "theme_color": "#f3f5f9",
-  "background_color": "#f3f5f9"
+  "theme_color": "#13776c",
+  "background_color": "#f5f7f9"
 }

@@ -1,0 +1,65 @@
+map $http_host $forwarded_port {
+    default 80;
+    # Preserve the public HTTP port, including bracketed IPv6 hosts.
+    ~:(?<forwarded_host_port>[0-9]+)$ $forwarded_host_port;
+}
+
+server {
+    listen 8080;
+    listen [::]:8080;
+    server_name _;
+    server_tokens off;
+    absolute_redirect off;
+    root /usr/share/nginx/html;
+    index index.html;
+    client_max_body_size 5m;
+    resolver 127.0.0.11 valid=10s ipv6=off;
+    resolver_timeout 5s;
+
+    gzip on;
+    gzip_vary on;
+    gzip_types text/css application/javascript application/json image/svg+xml;
+
+    location = /healthz {
+        access_log off;
+        default_type text/plain;
+        return 200 "ok\n";
+    }
+
+    location = /api {
+        return 308 /api/$is_args$args;
+    }
+
+    location ^~ /api/ {
+        # Resolve the Docker service again after DNS expiry, including after recreation.
+        set $api_upstream ${API_UPSTREAM};
+        # Keep the original query and pass the changed URI without a URI in proxy_pass.
+        rewrite ^/api/(.*)$ /$1 break;
+        proxy_pass $api_upstream;
+        proxy_http_version 1.1;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Host $http_host;
+        proxy_set_header X-Forwarded-Port $forwarded_port;
+        proxy_set_header Forwarded "";
+        proxy_connect_timeout 5s;
+        proxy_read_timeout 60s;
+        proxy_cache off;
+        add_header Cache-Control "no-store" always;
+    }
+
+    location ^~ /assets/ {
+        try_files $uri =404;
+        add_header Cache-Control "public, max-age=31536000, immutable";
+    }
+
+    location = /index.html {
+        add_header Cache-Control "no-cache" always;
+    }
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}
