@@ -1,70 +1,47 @@
-# Getting Started with Create React App
+# React Study
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+一个用于学习 React 的井字棋项目，使用 React 19、函数组件和 Hooks，基于 Vite 构建。
 
-## Available Scripts
+## 功能
 
-In the project directory, you can run:
+- X / O 轮流落子，禁止覆盖已有棋子。
+- 判断横、竖、斜线胜利并高亮连线，获胜后停止落子。
+- 棋盘填满且无人获胜时显示平局。
+- 回看任意一步，从历史位置继续落子时替换后续记录。
+- 一键重新开始，支持窄屏布局和键盘操作。
 
-### `npm start`
+## 环境
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+使用 Node.js `^22.22.2`、`^24.15.0` 或 `>=26.0.0`，满足当前构建和测试依赖的要求。
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```bash
+npm ci
+npm start
+```
 
-### `npm test`
+默认开发地址为 <http://localhost:3000>；端口占用时以终端实际输出为准。`npm run dev` 同样可以启动开发服务。
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 验证和构建
 
-### `npm run build`
+```bash
+npm test
+npm run build
+npm run preview
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- `npm test`：使用 Vitest、Testing Library 和 jsdom 执行游戏交互回归测试。
+- `npm run test:watch`：监听文件变化并重新运行测试。
+- `npm run build`：生成 `dist/` 生产静态文件。
+- `npm run preview`：本地预览构建结果，默认地址为 <http://localhost:4173>。
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+部署到子路径时可使用 `npm run build -- --base=/react-study/`。
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 代码入口
 
-### `npm run eject`
+- `index.html`：Vite HTML 入口和页面元信息。
+- `src/main.jsx`：使用 `createRoot` 和 `StrictMode` 挂载应用。
+- `src/Game.jsx`：棋格、棋盘、游戏状态和胜负判断。
+- `src/index.css`：棋盘、历史记录和响应式布局样式。
+- `src/Game.test.jsx`：胜负、平局、历史回看和重新开始的交互测试。
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+项目已由 Create React App 迁移到 Vite。旧的 `react-scripts`、未使用的 `web-vitals` 和 `eject` 命令已移除；生产输出目录从 `build/` 改为 `dist/`。
